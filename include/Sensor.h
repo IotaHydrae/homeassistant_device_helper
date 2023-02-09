@@ -52,7 +52,6 @@ struct sensor {
     char const *node_name;
     struct device *ppdev;
     char const *unit_of_measurement;
-    char const *icon;
     bool force_update;
 
     char config_topic[64];
@@ -80,36 +79,19 @@ private:
         cJSON *device = cJSON_CreateObject();
         cJSON *payload = cJSON_CreateObject();
 
-
-        // cJSON_AddStringToObject(payload, "~", path_state);
         cJSON_AddStringToObject(payload, "name", m_sensor->name);
-
         cJSON_AddStringToObject(payload, "state_topic", m_sensor->state_topic);
-
         char uid[64];
         sprintf(uid, "0a7476cc-d6c1-40ba-8ae1-60%ld", random());
         cJSON_AddStringToObject(payload, "unique_id", uid);
-
         cJSON_AddStringToObject(payload, "unit_of_measurement", m_sensor->unit_of_measurement);
 
-        // if (cJSON_AddStringToObject(payload, "device", device) == NULL)
-        // {
-        //     goto end;
-        // }
         cJSON_AddItemToObject(payload, "device", device);
-
         cJSON_AddStringToObject(device, "identifiers", m_sensor->ppdev->identifiers);
-
-
         cJSON_AddStringToObject(device, "name", m_sensor->ppdev->name);
-
         cJSON_AddStringToObject(device, "sw_version", m_sensor->ppdev->sw_version);
-
         cJSON_AddStringToObject(device, "model", m_sensor->ppdev->model);
-
         cJSON_AddStringToObject(device, "manufacturer", m_sensor->ppdev->manufacturer);
-
-        // cJSON_AddItemToObject(payload, "device", cJSON_CreateObject());
 
         cJSON_AddStringToObject(payload, "force_update",
                                 m_sensor->force_update ? "True" : "False");
